@@ -5,11 +5,13 @@ const PORT = process.env.PORT || 9000;
 
 // Server Imports
 const express = require("express");
+const path = require("path");
 const http = require("http");
 const { Server: SocketServer } = require("socket.io");
 
 // Servers
 const app = express();
+app.use(express.static(path.join(__dirname, "public")))
 const server = http.createServer(app);
 const io = new SocketServer(server, { cors: { origin: corsOptions } });
 

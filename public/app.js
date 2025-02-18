@@ -19,19 +19,18 @@ const sendMessage = (e) => {
             room: roomId,
             message: message
         });
-        displayMessage(message, 'You', new Date().toLocaleTimeString(), 'right');
+        displayMessage(message, 'You', 'right');
         msgInput.value = "";
     }
     msgInput.focus();
 };
 
-const displayMessage = (message, sender, timestamp, alignment) => {
+const displayMessage = (message, sender, alignment) => {
     const li = document.createElement('li');
     li.className = `post post--${alignment}`;
     li.innerHTML = `
         <div class="post__header">
             <span class="post__header--name">${sender}</span>
-            <span class="post__header--time">${timestamp}</span>
         </div>
         <div class="post__text">${message}</div>
     `;
@@ -43,5 +42,5 @@ document.querySelector('.form-msg').addEventListener('submit', sendMessage);
 
 socket.on("serverMessage", (data) => {
     const { message, timestamp } = data;
-    displayMessage(message, 'Agent', timestamp, 'left');
+    displayMessage(message, 'Agent', 'left');
 });

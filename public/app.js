@@ -35,7 +35,7 @@ const displayMessage = (message, sender, alignment) => {
         <div class="post__text">${message}</div>
     `;
     chatDisplay.appendChild(li);
-    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+    li.scrollIntoView({ behavior: 'smooth' });
 };
 
 document.querySelector('.form-msg').addEventListener('submit', sendMessage);

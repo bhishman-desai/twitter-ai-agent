@@ -3,7 +3,7 @@ require("dotenv").config();
 const corsOptions = require("./config/corsOptions");
 const PORT = process.env.PORT || 9000;
 
-// Server Initialization
+// Server Imports
 const express = require("express");
 const http = require("http");
 const { Server: SocketServer } = require("socket.io");
@@ -23,31 +23,33 @@ tweetsNamespace.on("connection", (socket) => {
   const now = getFormattedDate();
   console.log(`[${now}] ✅ Client connected: ${socket.id}`);
 
+  // Client JOINS a Room on "joinRoom" event and Server LISTENS on "joinRoom" event
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`[${now}] ✅ Client ${socket.id} joined room: ${room}`);
+  });
+
   socket.on("disconnect", () => {
     const now = getFormattedDate();
     console.log(`[${now}] ❌ Client disconnected: ${socket.id}`);
   });
 
   // Client SENDS/EMITS on "clientMessage" event and Server LISTENS on "clientMessage" event
-  socket.on("clientMessage", (message) => {
+  socket.on("clientMessage", ({ room, message }) => {
     const now = getFormattedDate();
 
     if (typeof message !== "string" || message.trim() === "") {
-      console.warn(`[${now}] ⚠️ Invalid tweet received`);
+      console.warn(`[${now}] ⚠️ Invalid message received`);
       return;
     }
 
-    console.log(`[${now}] 📝 New tweet: ${message}`);
+    console.log(`[${now}] 📝 New message in room ${room}: ${message}`);
 
-    // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event
-    tweetsNamespace.emit("serverMessage", {
-      tweet: message,
+    // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event (on a specific room received on payload from client)
+    tweetsNamespace.to(room).emit("serverMessage", {
+      message: message,
       timestamp: now,
     });
-  });
-
-  socket.on("typing", (username) => {
-    tweetsNamespace.emit("userTyping", `${username} is typing...`);
   });
 });
 

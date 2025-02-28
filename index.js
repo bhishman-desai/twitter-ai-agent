@@ -26,6 +26,10 @@ tweetsNamespace.use(logger);
 const { getFormattedDate } = require("./utils/date");
 const { generateAgentResponse } = require("./utils/agent");
 
+// AI Agent Config  
+const { initClient } = require('./config/openAIClient');
+initClient();
+
 tweetsNamespace.on("connection", (socket) => {
   const now = getFormattedDate();
 

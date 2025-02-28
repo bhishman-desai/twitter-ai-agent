@@ -24,11 +24,11 @@ tweetsNamespace.use(logger);
 
 // Utils
 const { getFormattedDate } = require("./utils/date");
-const { generateAgentResponse } = require("./utils/agent");
+const { generateAgentResponse } = require("./utils/agent/generateResponse");
 
-// AI Agent Config  
-const { initClient } = require('./config/openAIClient');
-initClient();
+// AI Agent Config
+const { initOpenAIClient } = require("./config/openAIClient");
+initOpenAIClient();
 
 tweetsNamespace.on("connection", (socket) => {
   const now = getFormattedDate();
@@ -52,18 +52,18 @@ tweetsNamespace.on("connection", (socket) => {
 
     // Generate Agent Response from a new module
     try {
-        const agentResponse = await generateAgentResponse(message);
-        // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event (on a specific room received on payload from client)
-        tweetsNamespace.to(room).emit("serverMessage", {
-            message: agentResponse,
-            timestamp: now,
-        });
+      const agentResponse = await generateAgentResponse(message);
+      // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event (on a specific room received on payload from client)
+      tweetsNamespace.to(room).emit("serverMessage", {
+        message: agentResponse,
+        timestamp: now,
+      });
     } catch (error) {
-        console.error("Error generating agent response:", error);
-        tweetsNamespace.to(room).emit("serverMessage", {
-            message: "Sorry, I encountered an error processing your request.",
-            timestamp: now,
-        });
+      console.error("Error generating agent response:", error);
+      tweetsNamespace.to(room).emit("serverMessage", {
+        message: "Sorry, I encountered an error processing your request.",
+        timestamp: now,
+      });
     }
   });
 });

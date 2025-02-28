@@ -2,19 +2,19 @@ const OpenAI = require("openai");
 
 let client = null;
 
-const initClient = async () => {
+const initOpenAIClient = async () => {
   client = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 };
 
-const getClient = () => {
+const getOpenAIClient = () => {
   if (!client) {
     throw new Error(
-      "Client is not initialized. Please call initClient() first."
+      "OpenAI client is not initialized. Please call initOpenAI() first."
     );
   }
   return client;
 };
 
-module.exports = { initClient, getClient };
+module.exports = { initOpenAIClient, getOpenAIClient };

@@ -1,10 +1,10 @@
-const { getFormattedDate } = require("../date");
-const { generateTweet, postTweet } = require("./tools");
+const axios = require('axios');
 
 async function generateAgentResponse(userMessage) {
- 
-  const now = getFormattedDate();
-  return "How can I help you today?";
+  const response = await axios.post('https://aimyy.com/api/gpt', {
+    prompt: userMessage
+  });
+  return response.data.response;
 }
 
 module.exports = { generateAgentResponse };

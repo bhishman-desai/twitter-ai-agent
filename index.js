@@ -1,3 +1,4 @@
+// index.js
 // Configs
 require("dotenv").config();
 const corsOptions = require("./config/corsOptions");
@@ -23,6 +24,7 @@ tweetsNamespace.use(logger);
 
 // Utils
 const { getFormattedDate } = require("./utils/date");
+const { generateAgentResponse } = require("./utils/agent");
 
 tweetsNamespace.on("connection", (socket) => {
   const now = getFormattedDate();
@@ -37,18 +39,28 @@ tweetsNamespace.on("connection", (socket) => {
   });
 
   // Client SENDS/EMITS on "clientMessage" event and Server LISTENS on "clientMessage" event
-  socket.on("clientMessage", ({ room, message }) => {
+  socket.on("clientMessage", async ({ room, message }) => {
     const now = getFormattedDate();
 
     if (typeof message !== "string" || message.trim() === "") {
       return;
     }
 
-    // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event (on a specific room received on payload from client)
-    tweetsNamespace.to(room).emit("serverMessage", {
-      message: message,
-      timestamp: now,
-    });
+    // Generate Agent Response from a new module
+    try {
+        const agentResponse = await generateAgentResponse(message);
+        // Server SENDS/EMITS on "serverMessage" event and Client LISTENS on "serverMessage" event (on a specific room received on payload from client)
+        tweetsNamespace.to(room).emit("serverMessage", {
+            message: agentResponse,
+            timestamp: now,
+        });
+    } catch (error) {
+        console.error("Error generating agent response:", error);
+        tweetsNamespace.to(room).emit("serverMessage", {
+            message: "Sorry, I encountered an error processing your request.",
+            timestamp: now,
+        });
+    }
   });
 });
 

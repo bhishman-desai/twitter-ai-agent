@@ -2,13 +2,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-size: 1rem;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #15202B;
+    color: #FFFFFF;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -19,25 +18,33 @@ main {
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .chat-container {
     display: flex;
     flex-direction: column;
     height: 100%;
+    background-color: #192734;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .chat-header {
+    background-color: #22303C;
+    padding: 1rem;
     text-align: center;
-    margin-bottom: 1rem;
+}
+
+.chat-header h2 {
+    font-size: 1.5rem;
+    color: #1DA1F2;
 }
 
 .chat-display {
-    background-color: #333;
     list-style-type: none;
-    width: 100%;
-    border-radius: 10px;
-    margin: 1rem 0;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -48,41 +55,44 @@ main {
 .form-msg {
     display: flex;
     gap: .5rem;
-    padding: .5rem;
-    background-color: #222;
-    border-radius: 10px;
-    position: sticky;
-    bottom: 0;
+    padding: 1rem;
+    background-color: #22303C;
 }
 
 input {
     flex-grow: 1;
-    padding: .5rem;
-    border-radius: 10px;
+    padding: .75rem;
+    border-radius: 25px;
     border: none;
-    background-color: #444;
-    color: #e0e0e0;
+    background-color: #38444D;
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+input::placeholder {
+    color: #8899A6;
 }
 
 button {
-    padding: .5rem 1rem;
-    border-radius: 10px;
+    padding: 1rem;
+    border-radius: 50%;
     border: none;
-    background-color: #1e90ff;
-    color: #fff;
+    background-color: #1DA1F2;
+    color: #FFFFFF;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #1c86ee;
+    background-color: #1991DB;
 }
 
 .post {
-    background-color: #444;
-    border-radius: 10px;
-    padding: .5rem;
+    background-color: #38444D;
+    border-radius: 15px;
+    padding: 1rem;
     margin: .5rem 0;
-    color: #e0e0e0;
+    max-width: 80%;
 }
 
 .post--left {
@@ -91,7 +101,7 @@ button:hover {
 
 .post--right {
     align-self: flex-end;
-    background-color: #1e90ff;
+    background-color: #1DA1F2;
 }
 
 .post__header {
@@ -103,43 +113,38 @@ button:hover {
 
 .post__header--name {
     font-weight: bold;
+    color: #FFFFFF;
 }
 
 .post__header--time {
     font-size: .8rem;
+    color: #8899A6;
 }
 
 .post__text {
-    color: #e0e0e0;
+    color: #FFFFFF;
+    line-height: 1.4;
 }
 
 .typing-indicator .wave {
     display: flex;
     gap: 5px;
     align-items: center;
+    padding: 10px;
+    background-color: #38444D;
+    border-radius: 15px;
+    width: fit-content;
 }
 
 .typing-indicator .wave span {
     display: block;
     width: 8px;
     height: 8px;
-    background-color: #555;
+    background-color: #8899A6;
     border-radius: 50%;
     animation: wave 1.2s infinite ease-in-out;
 }
 
-/* Creating the wave effect by delaying each dot */
-.typing-indicator .wave span:nth-child(1) {
-    animation-delay: 0s;
-}
-.typing-indicator .wave span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-.typing-indicator .wave span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-/* Keyframes for wave motion */
 @keyframes wave {
     0%, 60%, 100% {
         transform: translateY(0);

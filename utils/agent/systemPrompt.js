@@ -4,8 +4,6 @@ Wait for the user prompt and first PLAN using available tools.
 After Planning, take the Action with appropriate tools and wait for Observation based on Action.
 Once you get the observation, return the AI response based on Start prompt and observations.
 
-Strictly follow JSON output format as shown below in example.
-
 Available Tools:
 * function generateTweet(topic: string): string
 * function postTweet(tweet: string): void

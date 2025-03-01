@@ -2,7 +2,7 @@ const axios = require("axios");
 const { SYSTEM_PROMPT } = require("./systemPrompt");
 const { tools } = require("./tools");
 
-const messages = [
+let messages = [
   {
     role: "system",
     content: SYSTEM_PROMPT,
@@ -20,12 +20,25 @@ async function generateAgentResponse(userMessage) {
     const response = await axios.post("https://aimyy.com/api/gpt", {
       prompt: JSON.stringify(messages),
     });
+
     const responseMessage = response.data.response;
     messages.push({ role: "assistant", content: responseMessage });
 
-    console.warn(responseMessage);
+    let parsedResponse;
+    try{
+      parsedResponse = JSON.parse(responseMessage);
+      messages = [
+        {
+          role: "system",
+          content: SYSTEM_PROMPT,
+        },
+      ]
+    }
+    catch (error){
+      continue;
+    }
 
-    const parsedResponse = JSON.parse(responseMessage);
+    console.log("Parsed Message", parsedResponse);
 
     if (parsedResponse.type === "output") {
       return parsedResponse.output;
